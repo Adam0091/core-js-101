@@ -171,7 +171,7 @@ function doRectanglesOverlap(rect1, rect2) {
 function isInsideCircle(circle, point) {
   const {
     center,
-    radius
+    radius,
   } = circle;
   const distance = Math.sqrt((center.x - point.x) ** 2 + (center.y - point.y) ** 2);
   return distance < radius;
@@ -278,11 +278,11 @@ function reverseInteger(num) {
  */
 function isCreditCardNumber(ccn) {
   return (ccn.toString().split('').reverse().slice(1)
-      .map((x, i) => ((i + 1) % 2 ? x * 2 : x))
-      .map((x) => (x > 9 ? +x - 9 : +x))
-      .reduce((a, c) => a + c, 0) +
-      +ccn.toString()[ccn.toString().length - 1]) %
-    10 === 0;
+    .map((x, i) => ((i + 1) % 2 ? x * 2 : x))
+    .map((x) => (x > 9 ? +x - 9 : +x))
+    .reduce((a, c) => a + c, 0)
+      + +ccn.toString()[ccn.toString().length - 1])
+    % 10 === 0;
 }
 
 /**
@@ -475,8 +475,8 @@ function evaluateTicTacToePosition(position) {
   const transposed = position.map((_, i) => position.map((row) => row[i]));
   const straightMoves = () => [...position, ...transposed];
   const isStraightWinner = (symbol) => straightMoves()
-    .some((moves) => moves.length === position.length &&
-      moves.every((move) => move === symbol));
+    .some((moves) => moves.length === position.length
+      && moves.every((move) => move === symbol));
 
   const diagonalMoves = () => {
     const res = [];

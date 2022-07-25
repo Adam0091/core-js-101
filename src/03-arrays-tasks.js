@@ -36,15 +36,7 @@ function findElement(arr, value) {
  *    5 => [ 1, 3, 5, 7, 9 ]
  */
 function generateOdds(len) {
-  let start = -1;
-  let arr = Array.from({
-    length: len,
-  }, () => 0);
-  arr = arr.map(() => {
-    start += 2;
-    return start;
-  });
-  return arr;
+  return Array(len).fill(null).map((_, i) => i * 2 + 1);
 }
 
 
@@ -77,7 +69,7 @@ function doubleArray(arr) {
  *    [] => []
  */
 function getArrayOfPositives(arr) {
-  return arr.filter((elem) => elem > 0);
+  return arr.filter((x) => x > 0);
 }
 
 /**
@@ -92,7 +84,7 @@ function getArrayOfPositives(arr) {
  *    [ 'cat, 'dog', 'raccoon' ] => [ 'cat', 'dog', 'raccoon' ]
  */
 function getArrayOfStrings(arr) {
-  return arr.filter((elem) => typeof elem === 'string');
+  return arr.filter((x) => typeof x === 'string');
 }
 
 /**
@@ -109,7 +101,7 @@ function getArrayOfStrings(arr) {
  *    [ false, 0, NaN, '', undefined ]   => [ ]
  */
 function removeFalsyValues(arr) {
-  return arr.filter((elem) => Boolean(elem));
+  return arr.filter((x) => x);
 }
 
 /**
@@ -124,7 +116,7 @@ function removeFalsyValues(arr) {
  *    [ 'a', 'b', 'c', 'd', 'e', 'f', 'g' ]  => [ 'A', 'B', 'C', 'D', 'E', 'F', 'G' ]
  */
 function getUpperCaseStrings(arr) {
-  return arr.map((element) => element.toUpperCase());
+  return arr.map((x) => x.toUpperCase());
 }
 
 
@@ -139,7 +131,7 @@ function getUpperCaseStrings(arr) {
  *    [ 'angular', 'react', 'ember' ] => [ 7, 5, 5 ]
  */
 function getStringsLength(arr) {
-  return arr.map((elem) => elem.length);
+  return arr.map((x) => x.length);
 }
 
 /**
@@ -168,7 +160,7 @@ function insertItem(arr, item, index) {
  *    [ 'a', 'b', 'c', 'd'], 3  => [ 'a', 'b', 'c' ]
  */
 function getHead(arr, n) {
-  return arr.splice(0, n);
+  return arr.slice(0, n);
 }
 
 
@@ -183,7 +175,7 @@ function getHead(arr, n) {
  *    [ 'a', 'b', 'c', 'd'], 3  => [ 'b', 'c', 'd' ]
  */
 function getTail(arr, n) {
-  return arr.reverse().splice(0, n).reverse();
+  return arr.slice(-n);
 }
 
 
@@ -208,7 +200,7 @@ function getTail(arr, n) {
  *    +'30,31,32,33,34'
  */
 function toCsvText(arr) {
-  return arr.reduce((acc, el) => `${acc}\n${el}`);
+  return arr.reduce((a, c, i) => `${a}${c.join(',')}${i !== arr.length - 1 ? '\n' : ''}`, '');
 }
 
 /**
@@ -223,8 +215,9 @@ function toCsvText(arr) {
  *   [ 10, 100, -1 ]      => [ 100, 10000, 1 ]
  */
 function toArrayOfSquares(arr) {
-  return arr.map((el) => el ** 2);
+  return arr.map((x) => x * x);
 }
+
 
 /**
  * Transforms the numeric array to the according moving sum array:
@@ -283,6 +276,7 @@ function getSecondItems(arr) {
 function propagateItemsByPositionIndex(arr) {
   return arr.reduce((a, c, i) => [...a, ...Array(i + 1).fill(c)], []);
 }
+
 
 /**
  * Returns the 3 largest numbers from the specified array
@@ -522,8 +516,7 @@ function distinct(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(arr, keySelector, valueSelector) {
-  const map = new Map();
+function group(arr, keySelector, valueSelector, map = new Map()) {
   arr.map((x) => map.set(keySelector(x), [...(map.get(keySelector(x)) || []), valueSelector(x)]));
   return map;
 }

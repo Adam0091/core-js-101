@@ -20,7 +20,7 @@
  *   5, 5  => 25
  */
 function getRectangleArea(width, height) {
-  return (width * height);
+  return width * height;
 }
 
 
@@ -52,7 +52,7 @@ function getCircleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-  return value1 / 2 + value2 / 2;
+  return (value1 / 2) + (value2 / 2);
 }
 
 /**
@@ -71,7 +71,7 @@ function getAverage(value1, value2) {
  *   (-5,0) (10,-10) => 18.027756377319946
  */
 function getDistanceBetweenPoints(x1, y1, x2, y2) {
-  return Math.hypot(x2 - x1, y2 - y1);
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 }
 
 /**
@@ -87,7 +87,7 @@ function getDistanceBetweenPoints(x1, y1, x2, y2) {
  *   5*x = 0         => 0
  */
 function getLinearEquationRoot(a, b) {
-  return -b / a;
+  return (b * -1) / a;
 }
 
 
@@ -110,10 +110,10 @@ function getLinearEquationRoot(a, b) {
  *   (0,1) (1,2)     => 0
  */
 function getAngleBetweenVectors(x1, y1, x2, y2) {
-  return Math.acos((x1 * x2 + y1 * y2)
-    / (Math.sqrt(x1 ** 2 + y1 ** 2) * Math.sqrt(x2 ** 2 + y2 ** 2)));
+  const length1 = Math.sqrt(x1 ** 2 + y1 ** 2);
+  const length2 = Math.sqrt(x2 ** 2 + y2 ** 2);
+  return Math.acos(((x1 * x2) + (y1 * y2)) / (length1 * length2));
 }
-
 
 /**
  * Returns a last digit of a integer number.
@@ -128,7 +128,7 @@ function getAngleBetweenVectors(x1, y1, x2, y2) {
  *     0     => 0
  */
 function getLastDigit(value) {
-  return String(value)[String(value).length - 1];
+  return `${value}`.split('').pop();
 }
 
 
@@ -144,7 +144,7 @@ function getLastDigit(value) {
  * '-525.5'     => -525.5
  */
 function parseNumberFromString(value) {
-  return Number(value);
+  return `${value}`;
 }
 
 /**
@@ -183,13 +183,7 @@ function getParallelepipedDiagonal(a, b, c) {
  *   1678, 3  => 2000
  */
 function roundToPowerOfTen(num, pow) {
-  let numStr = num.toString();
-  const wholePart = numStr.slice(0, numStr.length - pow);
-  const fractionalPart = numStr.slice(numStr.length - pow);
-  numStr = Number(`${wholePart}.${fractionalPart}`);
-  numStr = Math.round(numStr);
-  numStr *= 10 ** pow;
-  return numStr;
+  return Math.round(num / (10 ** pow)) * 10 ** pow;
 }
 
 /**
@@ -210,9 +204,10 @@ function roundToPowerOfTen(num, pow) {
  *   17 => true
  */
 function isPrime(n) {
-  for (let i = 2; i < 10; i += 1) if (n % i === 0 && n !== i) return false;
-
-  return true;
+  for (let i = 2, s = Math.sqrt(n); i <= s; i += 1) {
+    if (n % i === 0) return false;
+  }
+  return n > 1;
 }
 
 /**
@@ -230,8 +225,8 @@ function isPrime(n) {
  *   toNumber(42, 0) => 42
  *   toNumber(new Number(42), 0) => 42
  */
-function toNumber(value, def) {
-  return Number.isNaN(Number(value)) ? def : Number(value);
+function toNumber(n, def) {
+  return !n || !Number(n) ? def : n;
 }
 
 module.exports = {

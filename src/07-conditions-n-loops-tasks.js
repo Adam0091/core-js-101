@@ -169,7 +169,10 @@ function doRectanglesOverlap(rect1, rect2) {
  *
  */
 function isInsideCircle(circle, point) {
-  const { center, radius } = circle;
+  const {
+    center,
+    radius
+  } = circle;
   const distance = Math.sqrt((center.x - point.x) ** 2 + (center.y - point.y) ** 2);
   return distance < radius;
 }
@@ -275,11 +278,11 @@ function reverseInteger(num) {
  */
 function isCreditCardNumber(ccn) {
   return (ccn.toString().split('').reverse().slice(1)
-    .map((x, i) => ((i + 1) % 2 ? x * 2 : x))
-    .map((x) => (x > 9 ? +x - 9 : +x))
-    .reduce((a, c) => a + c, 0)
-    + +ccn.toString()[ccn.toString().length - 1])
-    % 10 === 0;
+      .map((x, i) => ((i + 1) % 2 ? x * 2 : x))
+      .map((x) => (x > 9 ? +x - 9 : +x))
+      .reduce((a, c) => a + c, 0) +
+      +ccn.toString()[ccn.toString().length - 1]) %
+    10 === 0;
 }
 
 /**
@@ -382,15 +385,27 @@ function toNaryString(num, n) {
  *   ['/web/favicon.ico', '/web-scripts/dump', '/verbalizer/logs'] => '/'
  */
 function getCommonDirectoryPath(pathes) {
-  const map = pathes.map((x) => x.split('/'))
-    .map((path) => path.map((x) => (x.length ? x : '/')));
-  const set = new Set(map.flat());
-  const set2 = [...set].filter((x) => map.every((path) => path.includes(x)));
-  return set2[0] === '/'
-    ? `/${set2.slice(1).join('/')}${set2.length > 1 ? '/' : ''}`
-    : `${set2.join('/')}${set2.length > 1 ? '/' : ''}`;
-}
+  let count = 1;
+  let newArr = [];
+  let secArr = [];
 
+  function finder(arr) {
+    newArr = [];
+    secArr = [];
+    arr.map((el) => newArr.push(el.slice(0, count)));
+    arr.map((el) => secArr.push(el.slice(0, count + 1)));
+    count += 1;
+    if (newArr.every((el) => el === newArr[0]) && !secArr.every((el) => el === secArr[0])) {
+      return newArr;
+    }
+    return finder(arr);
+  }
+  if (!pathes.every((el) => el[0] === pathes[0][0])) {
+    return '';
+  }
+  const newStr = finder(pathes)[0];
+  return newStr.slice(0, newStr.lastIndexOf('/') + 1);
+}
 
 /**
  * Returns the product of two specified matrixes.
@@ -460,8 +475,8 @@ function evaluateTicTacToePosition(position) {
   const transposed = position.map((_, i) => position.map((row) => row[i]));
   const straightMoves = () => [...position, ...transposed];
   const isStraightWinner = (symbol) => straightMoves()
-    .some((moves) => moves.length === position.length
-      && moves.every((move) => move === symbol));
+    .some((moves) => moves.length === position.length &&
+      moves.every((move) => move === symbol));
 
   const diagonalMoves = () => {
     const res = [];

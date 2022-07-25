@@ -536,9 +536,10 @@ function group(arr, keySelector, valueSelector, map = new Map()) {
  *   ['one','two','three'], x=>x.split('')  =>   ['o','n','e','t','w','o','t','h','r','e','e']
  */
 function selectMany(arr, childrenSelector) {
-  return arr.map(childrenSelector).flat();
+  const newArr = [];
+  arr.map((el) => newArr.push(...childrenSelector(el)));
+  return newArr;
 }
-
 
 /**
  * Returns an element from the multidimensional array by the specified indexes.
@@ -580,9 +581,9 @@ function swapHeadAndTail(arr) {
   const head = arr.slice(0, half);
   const mid = arr.slice(half, -half);
   const tail = arr.slice(-half);
-  return arr.length % 2 === 0
-    ? [...tail, ...head]
-    : [...tail, ...mid, ...head];
+  return arr.length % 2 === 0 ?
+    [...tail, ...head] :
+    [...tail, ...mid, ...head];
 }
 
 
